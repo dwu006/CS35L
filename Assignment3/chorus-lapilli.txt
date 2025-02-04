@@ -1,0 +1,36 @@
+Daniel Wu - CS35L Winter 2025 Eggert
+2/3/2025
+
+Brainstorming
+
+I decided would have a counter variable to check whether if each user had placed 3 pieces,
+a bool variable that would check if the user had clicked a piece (a non-empty square), and a
+variable storing the value of the square they clicked on. 
+
+I wanted to first have code that allow the user to place each of the 3 pieces. Then it would check if the click is 
+on a piece of the corresponding player. And if the player hasnt clicked before it will set click to true then exit. 
+And when the users clicks on other occupied squares it will return without changing the turn and will only go further on
+in the code if the square is empty. It will check if its a valid move then will check if the middle square is occupied and 
+if the move can win with the square in the middle or not and will change values accordingly.
+
+Development
+
+Copied the tic-tac-toe code
+Create 3 new variables with their set variables- (counter, setCounter) to count the turns and only used for the beginning 3 turns
+(isClicked, setClicked) which starts as false and is updated when the user clicks on a piece
+(selectedSquare, setSelectedSquare) which stores the square that is clicked
+First I have a if statement checking if counter is less than 3 then keep allowing user to add their pieces 
+Added an increment counter after one of the users places a piece
+Add an if else if statement with first conditional being if the square that is being clicked the same as the user's pieces
+and if isClicked is true or not. The other conditional checks if square is null and if isCicked is true.
+if the first conditional is true clicked will be set to true and selected square will sstore the position of the clicked square then it will return
+Next if the next square clicked is null and isClicked is true then we will execute the next chunk of code. 
+It checks if a move is valid by callign a checkMove function I wrote that based on the row they are in have differnt available moves
+if the new clicked square is a valid move then we will go into another conditional. 
+We will then check if the middle square is occupied and if it is occupied by the same type of the user
+we will temp set the clicked square from before to null and the new clicked square to the user piece type. then we will check if this new position of 
+X's or O's will iwin, if it doesn;t win and if the middle square is still occupied we will undo the move and return forcing the user to reclick
+Otherwise we will keep the move, set click back to false and cotinue with setsquares with our copied square and reversing value of xIsNext to change turns.
+If the click passes all previous checks and the middle square isnt occupied at all, it justs sets new pos to user piece and old selected square to null
+
+The End!

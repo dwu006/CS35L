@@ -1,0 +1,23 @@
+Downloaded the sandbox files and opened them in vscode
+Edited the package.json file for the dependices to work
+npm install
+
+Create Square component and create 3 rows of Squares to make a board
+Added a value parameter for Square component
+Added a onClick function to print something in console when a square is clicked
+Added value and setValue variables to null using useState and removed earlier value parameter
+Set value inside the square to X when clicked
+
+Added squares and setSquares variables to null values in an array using useState
+Added the value parameter back to Square component and filled those parameters according to pos in array in board
+Changed click function to call a new parameter in Square named onSquareClick
+Set new parameter in Squares in Board to call a handleClick function in Board that prints an X and lets React knows the board has changed
+Added an parameter to the click function in Board so any Square can all install
+Added arrow function to call the click functions to prevent infinite loop
+
+Add xisNext and setXisTrue variables and set to true
+Modify click funtion in Board so it alternates printing X's and O's
+Add a if statement in click function to check whether Square is filled or not
+Create a check winner function that checks whether X's or O's has won (outside of Board)
+Create variable to call checkwinner and based on value determine if game is won or next player's turn
+Adds status above the tic-tac-toe board
