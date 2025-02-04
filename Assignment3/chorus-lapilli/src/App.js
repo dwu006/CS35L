@@ -22,7 +22,6 @@ export default function Board() {
   const [selectedSquare, setSelectedSquare] = useState(0);
 
   useEffect(() => {
-    console.log("Updated Squares:", squares);
   }, [squares]); 
 
 
@@ -83,7 +82,6 @@ export default function Board() {
     } else {
       if(nextSquares[i] == x && !isClicked)
       {
-        console.log("clicked")
         setClicked(true);
         setSelectedSquare(i);
         return;
@@ -92,12 +90,10 @@ export default function Board() {
         if(!(validMoves.includes(i))){return;}
         if(nextSquares[4] && nextSquares[4] === x)
         {
-          console.log("here")
           nextSquares[selectedSquare] = null;
           nextSquares[i] = x;
           if(!calculateWinner(nextSquares) && nextSquares[4])
           {
-            console.log("error")
             nextSquares[selectedSquare] = x;
             nextSquares[i] = null;
             setClicked(false);
@@ -105,13 +101,11 @@ export default function Board() {
           }
           setClicked(false);
         } else {
-          console.log("p2")
           nextSquares[selectedSquare] = null;
           nextSquares[i] = x;
           setClicked(false);
         }
       } else {
-        console.log("returning")
         return;
       }
     }
