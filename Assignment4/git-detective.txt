@@ -1,0 +1,84 @@
+
+
+
+I first tried just searching using grep such as using git log --grep="merge-tree" --grep="segfault" --grep="read-only" --oneline
+It gave me too much commits to search through. I tried using grep individually and also trying to use | to check for both merge-tree and segfault or any other 2 combinations or all 3. But didn't get any results. I then saw that version 2.39 was released on Dec 12 2022 
+so I did git log --grep... --since=2022-12-12 option to find the commits from the version release to present. I then limited the dates to
+git log --grep... --since=2022-12-12 --before=2023-01-17 where Jan 17 2023 was when version 2.39.1 was released. 
+
+After trying a couple combinations with different grep, I realized version 2.39 fixed the problem, so I was supppose to find before
+12-12-22. so instead i started using git log -grep... --before=2022-12-12 and after looking through the list a bit I found the 2 commits:
+
+commit 0b55d930a69692c7f4e7b90e35fa41f6c46df4bc
+Author: Johannes Schindelin <Johannes.Schindelin@gmx.de>
+Date:   Wed Sep 28 07:29:21 2022 +0000
+
+    merge-ort: fix segmentation fault in read-only repositories
+    
+    If the blob/tree objects cannot be written, we really need the merge
+    operations to fail, and not to continue (and then try to access the tree
+    object which is however still set to `NULL`).
+    
+    Let's stop ignoring the return value of `write_object_file()` and
+    `write_tree()` and set `clean = -1` in the error case.
+    
+    Reviewed-by: Elijah Newren <newren@gmail.com>
+    Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+    Signed-off-by: Junio C Hamano <gitster@pobox.com>
+
+commit 92481d1b26ab57525f5efe01d01c7a3d337b8df7
+Author: Johannes Schindelin <Johannes.Schindelin@gmx.de>
+Date:   Wed Sep 28 07:29:22 2022 +0000
+
+    merge-ort: return early when failing to write a blob
+    
+    In the previous commit, we fixed a segmentation fault when a tree object
+    could not be written.
+    
+    However, before the tree object is written, `merge-ort` wants to write
+    out a blob object (except in cases where the merge results in a blob
+    that already exists in the database). And this can fail, too, but we
+    ignore that write failure so far.
+    
+    Let's pay close attention and error out early if the blob could not be
+    written. This reduces the error output of t4301.25 ("merge-ort fails
+    gracefully in a read-only repository") from:
+    
+            error: insufficient permission for adding an object to repository database ./objects
+            error: error: Unable to add numbers to database
+            error: insufficient permission for adding an object to repository database ./objects
+            error: error: Unable to add greeting to database
+            error: insufficient permission for adding an object to repository database ./objects
+            fatal: failure to merge
+    
+    to:
+    
+            error: insufficient permission for adding an object to repository database ./objects
+            error: error: Unable to add numbers to database
+            fatal: failure to merge
+    
+    This is _not_ just a cosmetic change: Even though one might assume that
+    the operation would have failed anyway at the point when the new tree
+    object is written (and the corresponding tree object _will_ be new if it
+    contains a blob that is new), but that is not so: As pointed out by
+    Elijah Newren, when Git has previously been allowed to add loose objects
+    via `sudo` calls, it is very possible that the blob object cannot be
+    written (because the corresponding `.git/objects/??/` directory may be
+    owned by `root`) but the tree object can be written (because the
+    corresponding objects directory is owned by the current user). This
+    would result in a corrupt repository because it is missing the blob
+    object, and with this here patch we prevent that.
+    
+    Note: This patch adjusts two variable declarations from `unsigned` to
+    `int` because their purpose is to hold the return value of
+    `handle_content_merge()`, which is of type `int`. The existing users of
+    those variables are only interested whether that variable is zero or
+    non-zero, therefore this type change does not affect the existing code.
+    
+    Reviewed-by: Elijah Newren <newren@gmail.com>
+    Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+    Signed-off-by: Junio C Hamano <gitster@pobox.com>
+
+
+The first commit mentions the segmentation fault in read only repositories and how they fixed it.
+The second commit mentions although one test case is fixed there is another fail case.

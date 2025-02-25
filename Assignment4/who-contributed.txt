@@ -1,0 +1,14 @@
+I used the cmd git log -S "Even newspaper reports present contradictory information." 
+This gave me the below information that the author of the line is Arthur David Olson who added the line on Thu Dec 21 at 11:43:42 1995. Professor Eggert did make a change to the line, but he was not the
+original author. The edit was made in the file northamerica and the commit id is c12b432741eed9a422fbf99fa27af6e7a941d88b 
+
+
+(base) danielwu@danielsdesktop:~/Documents/Coding/UCLA/CS35L/Assignment4/tz$ git log -S "Even newspaper reports present contradictory information."
+commit c12b432741eed9a422fbf99fa27af6e7a941d88b
+Author: Arthur David Olson <ado@elsie>
+Date:   Thu Dec 21 11:43:42 1995 -0500
+
+    Eggert changes
+    
+    SCCS-file: northamerica
+    SCCS-SID: 7.20

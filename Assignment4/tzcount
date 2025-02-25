@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "Error"
+    exit 1
+fi
+
+
+git log --date=iso --pretty=format:"%ci" "$1" | \
+sed -E 's/.*([+-][0-9]{4})$/\1/' | \
+sort | uniq -c | \
+awk '{print $2, $1}' | \
+sort -n 

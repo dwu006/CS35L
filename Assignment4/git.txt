@@ -1,0 +1,5 @@
+After cloning from Git's git repo and running git branch I only see one branch
+master. But in ~eggert/src/github/git running git branch shows 2 branches: maint
+and master, meaning someone created a separate branch and was working on it. 
+While I just cloned the latest version of the git repo, which is why I only saw
+one branch.
