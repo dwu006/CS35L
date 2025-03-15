@@ -1,0 +1,103 @@
+Daniel Wu 706382792
+
+Assignment 6 Notes
+
+Assignment 6 Guide: https://docs.google.com/presentation/d/1reeR9QA3b8RcJpTuo9p-Y6wyw5RbGwBrzUmg2_nrxcM/edit#slide=id.g2715926e847_0_31
+
+1. Setup repo/files
+
+mkdir randall
+cd randall
+wget https://web.cs.ucla.edu/classes/winter25/cs35L/assign/randall-git.tgz
+tar -xvzf randall-git.tgz
+git reset --hard
+
+2. Build + Sanity Checks
+
+make
+./randall     # should display help msg
+./randall 30    # should print 30 random bytes
+./randall -fake    # should throw error
+./randall 20 | wc -c    # should output 20
+
+3. Unit Tests
+
+wrote a check unit test in makefile
+check: randall
+	@echo "Running test cases..."
+	@echo "=========== TEST 1 ===========" 
+	@./randall 20 | wc -c | (grep -q "^20$$" && echo "PASSED") || (echo "FAILED" && false)
+
+This will run whenever you call make check and will check if the output of randall 20 is 20
+
+4. Refactoring
+
+split randall into multiple .c and .h files
+options.c + options.h - cmd line processing
+output.c + output.h - output stuff
+rand64-hw.c + rand64-hw.h - hardware implementation for rand #
+rand64-sw.c + rand64-sw.h - software implementation for rand #
+randall.c - contains main function, calls other functions, and handles input/output
+
+Added guards to each header files to prevent errors when the program trys to link or compile files
+
+update the Makefile by adding:
+FILES = $(wildcard *.c) $(wildcard *.h)
+then updating this part so when we run make it will link and compile multiple files
+randall: randall.c $(FILES)
+	$(CC) $(CFLAGS) *.c -o $@
+
+5. Command Line Option Processing with getopt
+
+Implemented command line option processing using the getopt library in randall.c:
+- Added functionality to handle -i and -o options
+- -i option: Specifies the input source (rdrand, lrand48_r, or a file path)
+- -o option: Specifies the output method (stdio or a block size N)
+- Default values: input="rdrand" and output="stdio"
+
+The implementation steps were:
+1. Include the getopt.h header
+2. Set up a while loop to process options with getopt(argc, argv, "i:o:")
+3. Use a switch statement to handle each option case
+4. Validate options and provide helpful error messages for invalid inputs
+5. Added error handling for when rdrand is requested but not supported
+
+6. Output Handling Implementation
+
+Created a centralized handle_output function in output.c that:
+1. Takes input method, output method, and nbytes as parameters
+2. Dynamically selects the appropriate random number generation functions based on input:
+   - For "rdrand", uses hardware functions
+   - For "mrand48_r", uses the software mrand48_r implementation in a reentrant style
+   - For file paths (starting with "/"), uses the file-based implementation
+3. Implements two output methods:
+   - "stdio": Uses the original byte-by-byte output method
+   - Block output (when -o N is specified): Uses buffered I/O for efficiency
+4. Includes error handling and returns appropriate error codes
+
+The implementation significantly improves efficiency when writing large amounts of random data by reducing the number of system calls with the block-based output approach.
+
+7. /dev/random Implementation
+
+Implemented support for reading from /dev/random as a source of random numbers:
+- When input starts with "/", the program uses the file-based random number generator
+- For /dev/random specifically, it opens this special file which provides cryptographically secure random numbers from the Linux kernel's entropy pool
+- The implementation reads bytes from the file in chunks to generate random output
+- Added support for this in the Makefile's test suite (TEST 4) to verify this functionality works correctly
+
+8. Reentrant Programming with mrand48_r
+
+Implemented a random number generator using mrand48_r which employs reentrant programming techniques:
+- Reentrant code can be safely interrupted and called again before the previous call completes
+- The mrand48_r function uses a struct drand48_data to maintain state, unlike non-reentrant versions that use hidden global state
+- Benefits of reentrant code:
+  - Thread-safety: Can be safely called from multiple threads without race conditions
+  - No global state: All state information is contained in an explicit state variable
+  - Predictable behavior: Functions have no side effects on other functions
+- Implementation details:
+  - Used srand48_r to initialize the random number generator with the current time
+  - Used mrand48_r to generate 32-bit random numbers
+  - Combined two 32-bit values to create a full 64-bit random number
+  - Properly renamed all related functions to indicate using mrand48_r instead of lrand48_r
+  - Updated all relevant test cases in the Makefile
+

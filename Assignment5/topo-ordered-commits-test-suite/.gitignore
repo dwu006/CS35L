@@ -1,0 +1,7 @@
+.DS_Store
+.idea
+*__pycache__*
+*.pyc
+tests/repo_fixture
+.pytest_cache/
+venv/
