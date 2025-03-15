@@ -15,4 +15,6 @@
 |----------|------|
 | Final Project |   |
 
+Link to Final Project: https://github.com/dwu006/fashionapp
+
 ### Please use only as a resource!
