@@ -3,12 +3,12 @@
 ## Assignment Scores
 | Homework  | Score |
 |----------|------|
-| Assignment 1 | 100 |
-| Assignment 2 | 100 |
-| Assignment 3 |    |
-| Assignment 4 | 99 |
-| Assignment 5 |    |
-| Assignment 6 |   |
+| Assignment 1 |100|
+| Assignment 2 |100|
+| Assignment 3 |  |
+| Assignment 4 |99|
+| Assignment 5 |  |
+| Assignment 6 |  |
 
 ## Project Scores
 |  Project  | Score |
