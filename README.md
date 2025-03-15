@@ -1,12 +1,14 @@
 # UCLA CS35L - Winter 2025 - Paul Eggert
 
-## Homework Scores
+## Assignment Scores
 | Homework  | Score |
 |----------|------|
-| Homework 1 |   |
-| Homework 2 |  |
-| Homework 3 |    |
-| Homework 4 |   |
+| Assignment 1 | 100 |
+| Assignment 2 | 100 |
+| Assignment 3 |    |
+| Assignment 4 | 99 |
+| Assignment 5 |    |
+| Assignment 6 |   |
 
 ## Project Scores
 |  Project  | Score |
