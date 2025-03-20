@@ -7,7 +7,7 @@
 | Assignment 2 |100|
 | Assignment 3 |  |
 | Assignment 4 |99|
-| Assignment 5 |  |
+| Assignment 5 |100|
 | Assignment 6 |  |
 
 ## Project Scores
