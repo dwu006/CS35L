@@ -5,15 +5,15 @@
 |----------|------|
 | Assignment 1 |100|
 | Assignment 2 |100|
-| Assignment 3 |  |
+| Assignment 3 |94|
 | Assignment 4 |99|
 | Assignment 5 |100|
-| Assignment 6 |  |
+| Assignment 6 |100|
 
 ## Project Scores
 |  Project  | Score |
 |----------|------|
-| Final Project |   |
+| Final Project |98|
 
 Link to Final Project: https://github.com/dwu006/fashionapp
 
